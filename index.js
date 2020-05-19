@@ -5,8 +5,8 @@ const app = express();
 app.get("/", (request, response) => {
   return response.json({ message: "Hello world" });
 });
-porta = process.env.PORT || 8080;
+porta = 8080;
 
-app.listen(porta, () => {
+app.listen(process.env.PORT || porta, () => {
   console.log("Servidor iniciado em porta: %", porta);
 });

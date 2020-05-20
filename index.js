@@ -23,6 +23,30 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+  try {
+    const text = "SELECT * FROM tipocontato where id = $1";
+    const values = [id];
+
+    const client = await pool.connect();
+    const result = await client.query(text, values);
+    const results = result.rows;
+    client.end();
+    return res.json({ results });
+  } catch (err) {
+    console.error(err);
+    return res.json(err);
+  }
+});
+
 app.post("/", async (req, res) => {
   const { descricao } = req.body;
 

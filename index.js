@@ -2,16 +2,16 @@ const express  = require("express");
 const { Pool } = require("pg");
 
 const app = express();
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+
 
 
 app.get("/", (request, response) => {
-  
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM contato');

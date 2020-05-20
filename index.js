@@ -14,7 +14,7 @@ app.get("/", (request, response) => {
   
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM test_table');
+    const result = await client.query('SELECT * FROM contato');
     const results = result.rows;
     client.end();
     return response.json(results)

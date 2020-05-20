@@ -71,6 +71,31 @@ app.delete("/:id", async (req, res) => {
   }
 });
 
+app.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { descricao } = req.body;
+
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+  try {
+    const text = "UPDATE public.tipocontato SET descricao=$1 WHERE id=$2";
+    const values = [descricao, id];
+
+    const client = await pool.connect();
+    const result = await client.query(text, values);
+    const results = result.rows;
+    client.end();
+    return res.json({ results });
+  } catch (err) {
+    console.error(err);
+    return res.json(err);
+  }
+});
+
 app.listen(process.env.PORT || 8080, () => {
   console.log("Servidor iniciado");
 });

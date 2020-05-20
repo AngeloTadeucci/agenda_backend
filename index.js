@@ -22,7 +22,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.post("/", (req, res) => {
+app.post("/", async (req, res) => {
   const { descricao } = req.body;
 
   const pool = new Pool({

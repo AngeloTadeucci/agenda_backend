@@ -12,7 +12,7 @@ app.get("/", async (request, response) => {
   });
   try {
     const client = await pool.connect();
-    const result = await client.query("SELECT * FROM contato");
+    const result = await client.query("SELECT * FROM tipocontato");
     const results = result.rows;
     client.end();
     return response.json({ results });
@@ -21,6 +21,8 @@ app.get("/", async (request, response) => {
     return response.json(err);
   }
 });
+
+app.post("/", (request, response) => {});
 
 app.listen(process.env.PORT || 8080, () => {
   console.log("Servidor iniciado");

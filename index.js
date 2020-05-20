@@ -48,7 +48,7 @@ app.post("/", async (req, res) => {
 });
 
 app.delete("/:id", async (req, res) => {
-  const { id } = request.params;
+  const { id } = req.params;
 
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,

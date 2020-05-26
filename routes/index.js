@@ -1,7 +1,7 @@
 const { Router } = require("express");
 
 const tipoContatoRouter = require("./tipoContato.routes");
-const eventoRounter = require("./evento.routes");
+const eventoRouter = require("./evento.routes");
 
 const routes = Router();
 

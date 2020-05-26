@@ -7,6 +7,6 @@ const routes = Router();
 
 routes.use("/tipocontato", tipoContatoRouter);
 routes.use("/evento", eventoRounter);
-routes.use("/contato", tipoContatoRouter);
+// routes.use("/contato", tipoContatoRouter);
 
 module.exports = routes;

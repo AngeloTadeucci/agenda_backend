@@ -3,18 +3,18 @@ const { Pool } = require("pg");
 
 const eventoRouter = Router();
 
-eventoRouter.get("/evento", async (req, res) => {
+eventoRouter.get("/", async (req, res) => {
   const results = await executeQuery("SELECT * FROM evento", null);
   res.json({ results });
 });
 
-eventoRouter.get("/evento/:id", async (req, res) => {
+eventoRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   const results = await executeQuery("SELECT * FROM public.evento WHERE idevento = $1", [id]);
   res.json({ results });
 });
 
-eventoRouter.post("/evento", async (req, res) => {
+eventoRouter.post("/", async (req, res) => {
   const { nome } = req.body;
   const { dataHora } = req.body;
   const { idLocal } = req.body;
@@ -26,13 +26,13 @@ eventoRouter.post("/evento", async (req, res) => {
   res.json({ result });
 });
 
-eventoRouter.delete("/evento/:id", async (req, res) => {
+eventoRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const result = await executeQuery("DELETE FROM public.evento WHERE idevento=$1;", [id]);
   res.json({ result });
 });
 
-eventoRouter.patch("/evento/:id", async (req, res) => {
+eventoRouter.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { nome } = req.body;
   const { dataHora } = req.body;

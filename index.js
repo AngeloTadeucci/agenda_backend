@@ -46,7 +46,8 @@ app.get("/:id", async (req, res) => {
   //   console.error(err);
   //   return res.json(err);
   // }
-  res.json(executeGetQuery("SELECT * FROM public.tipocontato where id = $1", [id]));
+  const results = executeGetQuery("SELECT * FROM public.tipocontato where id = $1", [id]);
+  res.json({ results });
 });
 
 app.post("/", async (req, res) => {

@@ -22,6 +22,7 @@ app.get("/", async (req, res) => {
   //   return res.json(err);
   // }
   const results = executeGetQuery("SELECT * FROM tipocontato", null);
+  console.log(results);
   res.json({ results });
 });
 

@@ -17,13 +17,13 @@ app.get("/:id", async (req, res) => {
 
 app.post("/", async (req, res) => {
   const { descricao } = req.body;
-  const result = await executeQuery("INSERT INTO public.tipocontato (descricao) VALUES($1);", descricao);
+  const result = await executeQuery("INSERT INTO public.tipocontato (descricao) VALUES($1);", [descricao]);
   res.json({ result });
 });
 
 app.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  const result = await executeQuery("DELETE FROM public.tipocontato WHERE id=$1;", id);
+  const result = await executeQuery("DELETE FROM public.tipocontato WHERE id=$1;", [id]);
   res.json({ result });
 });
 
@@ -47,7 +47,7 @@ async function executeQuery(text, params) {
   });
   try {
     const client = await pool.connect();
-    var result = null;
+    let result = null;
     if (params == null) {
       result = await client.query(text);
     } else {

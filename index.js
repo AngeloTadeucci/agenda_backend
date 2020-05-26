@@ -25,7 +25,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/:id", async (req, res) => {
-  // const { id } = req.params;
+  const { id } = req.params;
 
   // const pool = new Pool({
   //   connectionString: process.env.DATABASE_URL,
@@ -135,7 +135,7 @@ async function executeGetQuery(text, params) {
   });
   try {
     const client = await pool.connect();
-    const result = null;
+    var result = null;
     if (params == null) {
       result = await client.query(text); // SELECT * FROM tipocontato
     } else {

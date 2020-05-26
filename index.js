@@ -21,7 +21,7 @@ app.get("/", async (req, res) => {
   //   console.error(err);
   //   return res.json(err);
   // }
-  executeGetQuery("SELECT * FROM tipocontato", null)
+  executeGetQuery("SELECT * FROM tipocontato", null);
 });
 
 app.get("/:id", async (req, res) => {
@@ -46,7 +46,7 @@ app.get("/:id", async (req, res) => {
   //   console.error(err);
   //   return res.json(err);
   // }
-  executeGetQuery("SELECT * FROM public.tipocontato where id = $1", [id])
+  executeGetQuery("SELECT * FROM public.tipocontato where id = $1", [id]);
 });
 
 app.post("/", async (req, res) => {
@@ -126,8 +126,7 @@ app.listen(process.env.PORT || 8080, () => {
   console.log("Servidor iniciado");
 });
 
-
-function executeGetQuery(text, params) {
+async function executeGetQuery(text, params) {
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {

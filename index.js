@@ -21,7 +21,8 @@ app.get("/", async (req, res) => {
   //   console.error(err);
   //   return res.json(err);
   // }
-  res.json(executeGetQuery("SELECT * FROM tipocontato", null));
+  const results = executeGetQuery("SELECT * FROM tipocontato", null);
+  res.json({ results });
 });
 
 app.get("/:id", async (req, res) => {

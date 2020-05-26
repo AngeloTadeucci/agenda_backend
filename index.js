@@ -30,7 +30,7 @@ app.delete("/:id", async (req, res) => {
 app.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { descricao } = req.body;
-  const result = await executeQuery("UPDATE public.tipocontato SET descricao=$1 WHERE id=$2", [id, descricao]);
+  const result = await executeQuery("UPDATE public.tipocontato SET descricao=$1 WHERE id=$2", [descricao, id]);
   res.json({ result });
 });
 
@@ -53,25 +53,6 @@ async function executeQuery(text, params) {
     } else {
       result = await client.query(text, params);
     }
-    const results = result.rows;
-    client.end();
-    return results;
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
-}
-
-async function executeInsertDeleteUpdateQuery(text, params) {
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
-  try {
-    const client = await pool.connect();
-    const result = await client.query(text, params);
     const results = result.rows;
     client.end();
     return results;

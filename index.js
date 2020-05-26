@@ -135,10 +135,11 @@ async function executeGetQuery(text, params) {
   });
   try {
     const client = await pool.connect();
+    const result;
     if (params == null) {
-      const result = await client.query(text); // SELECT * FROM tipocontato
+      result = await client.query(text); // SELECT * FROM tipocontato
     } else {
-      const result = await client.query(text, params);
+      result = await client.query(text, params);
     }
     const results = result.rows;
     client.end();

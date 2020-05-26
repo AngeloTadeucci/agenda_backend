@@ -143,7 +143,7 @@ async function executeGetQuery(text, params) {
     }
     console.log("Result: " + result);
     const results = result.rows;
-    console.log("Results.row: " + results.rows);
+    console.log("Results.row: " + results);
     client.end();
     return results;
   } catch (err) {

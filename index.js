@@ -5,131 +5,40 @@ const app = express();
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  // const pool = new Pool({
-  //   connectionString: process.env.DATABASE_URL,
-  //   ssl: {
-  //     rejectUnauthorized: false,
-  //   },
-  // });
-  // try {
-  //   const client = await pool.connect();
-  //   const result = await client.query("SELECT * FROM tipocontato");
-  //   const results = result.rows;
-  //   client.end();
-  //   return res.json({ results });
-  // } catch (err) {
-  //   console.error(err);
-  //   return res.json(err);
-  // }
-  const results = await executeGetQuery("SELECT * FROM tipocontato", null);
-  console.log(results);
+  const results = await executeQuery("SELECT * FROM tipocontato", null);
   res.json({ results });
 });
 
 app.get("/:id", async (req, res) => {
   const { id } = req.params;
-
-  // const pool = new Pool({
-  //   connectionString: process.env.DATABASE_URL,
-  //   ssl: {
-  //     rejectUnauthorized: false,
-  //   },
-  // });
-  // try {
-  //   const text = "SELECT * FROM public.tipocontato where id = $1";
-  //   const values = [id];
-
-  //   const client = await pool.connect();
-  //   const result = await client.query(text, values);
-  //   const results = result.rows;
-  //   client.end();
-  //   return res.json({ results });
-  // } catch (err) {
-  //   console.error(err);
-  //   return res.json(err);
-  // }
-  const results = executeGetQuery("SELECT * FROM public.tipocontato where id = $1", [id]);
+  const results = await executeQuery("SELECT * FROM public.tipocontato where id = $1", [id]);
   res.json({ results });
 });
 
 app.post("/", async (req, res) => {
   const { descricao } = req.body;
-
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
-  try {
-    const text = "INSERT INTO public.tipocontato (descricao) VALUES($1);";
-    const values = [descricao];
-
-    const client = await pool.connect();
-    const result = await client.query(text, values);
-    const results = result.rows;
-    client.end();
-    return res.json({ results });
-  } catch (err) {
-    console.error(err);
-    return res.json(err);
-  }
+  const result = await executeQuery("INSERT INTO public.tipocontato (descricao) VALUES($1);", descricao);
+  res.json({ result });
 });
 
 app.delete("/:id", async (req, res) => {
   const { id } = req.params;
-
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
-  try {
-    const text = "DELETE FROM public.tipocontato WHERE id=$1;";
-    const values = [id];
-
-    const client = await pool.connect();
-    const result = await client.query(text, values);
-    const results = result.rows;
-    client.end();
-    return res.json({ results });
-  } catch (err) {
-    console.error(err);
-    return res.json(err);
-  }
+  const result = await executeQuery("DELETE FROM public.tipocontato WHERE id=$1;", id);
+  res.json({ result });
 });
 
 app.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { descricao } = req.body;
-
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
-  try {
-    const text = "UPDATE public.tipocontato SET descricao=$1 WHERE id=$2";
-    const values = [descricao, id];
-
-    const client = await pool.connect();
-    const result = await client.query(text, values);
-    const results = result.rows;
-    client.end();
-    return res.json({ results });
-  } catch (err) {
-    console.error(err);
-    return res.json(err);
-  }
+  const result = await executeQuery("UPDATE public.tipocontato SET descricao=$1 WHERE id=$2", [id, descricao]);
+  res.json({ result });
 });
 
 app.listen(process.env.PORT || 8080, () => {
   console.log("Servidor iniciado");
 });
 
-async function executeGetQuery(text, params) {
+async function executeQuery(text, params) {
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -140,13 +49,30 @@ async function executeGetQuery(text, params) {
     const client = await pool.connect();
     var result = null;
     if (params == null) {
-      result = await client.query(text); // SELECT * FROM tipocontato
+      result = await client.query(text);
     } else {
       result = await client.query(text, params);
     }
-    console.log("Result: " + result);
     const results = result.rows;
-    console.log("Results.row: " + results);
+    client.end();
+    return results;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+}
+
+async function executeInsertDeleteUpdateQuery(text, params) {
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+  try {
+    const client = await pool.connect();
+    const result = await client.query(text, params);
+    const results = result.rows;
     client.end();
     return results;
   } catch (err) {

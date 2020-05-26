@@ -5,46 +5,48 @@ const app = express();
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
-  try {
-    const client = await pool.connect();
-    const result = await client.query("SELECT * FROM tipocontato");
-    const results = result.rows;
-    client.end();
-    return res.json({ results });
-  } catch (err) {
-    console.error(err);
-    return res.json(err);
-  }
+  // const pool = new Pool({
+  //   connectionString: process.env.DATABASE_URL,
+  //   ssl: {
+  //     rejectUnauthorized: false,
+  //   },
+  // });
+  // try {
+  //   const client = await pool.connect();
+  //   const result = await client.query("SELECT * FROM tipocontato");
+  //   const results = result.rows;
+  //   client.end();
+  //   return res.json({ results });
+  // } catch (err) {
+  //   console.error(err);
+  //   return res.json(err);
+  // }
+  executeGetQuery("SELECT * FROM tipocontato", null)
 });
 
 app.get("/:id", async (req, res) => {
-  const { id } = req.params;
+  // const { id } = req.params;
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
-  try {
-    const text = "SELECT * FROM tipocontato where id = $1";
-    const values = [id];
+  // const pool = new Pool({
+  //   connectionString: process.env.DATABASE_URL,
+  //   ssl: {
+  //     rejectUnauthorized: false,
+  //   },
+  // });
+  // try {
+  //   const text = "SELECT * FROM public.tipocontato where id = $1";
+  //   const values = [id];
 
-    const client = await pool.connect();
-    const result = await client.query(text, values);
-    const results = result.rows;
-    client.end();
-    return res.json({ results });
-  } catch (err) {
-    console.error(err);
-    return res.json(err);
-  }
+  //   const client = await pool.connect();
+  //   const result = await client.query(text, values);
+  //   const results = result.rows;
+  //   client.end();
+  //   return res.json({ results });
+  // } catch (err) {
+  //   console.error(err);
+  //   return res.json(err);
+  // }
+  executeGetQuery("SELECT * FROM public.tipocontato where id = $1", [id])
 });
 
 app.post("/", async (req, res) => {
@@ -123,3 +125,27 @@ app.patch("/:id", async (req, res) => {
 app.listen(process.env.PORT || 8080, () => {
   console.log("Servidor iniciado");
 });
+
+
+function executeGetQuery(text, params) {
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+  try {
+    const client = await pool.connect();
+    if (params == null) {
+      const result = await client.query(text); // SELECT * FROM tipocontato
+    } else {
+      const result = await client.query(text, params);
+    }
+    const results = result.rows;
+    client.end();
+    return res.json({ results });
+  } catch (err) {
+    console.error(err);
+    return res.json(err);
+  }
+}

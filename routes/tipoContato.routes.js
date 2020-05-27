@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const database = require("../db/database");
+require("../db");
 
 const tipoContatoRouter = Router();
 

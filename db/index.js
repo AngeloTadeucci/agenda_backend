@@ -1,6 +1,6 @@
 const { Pool } = require("pg");
 
-export async function executeQuery(text, params) {
+database.executeQuery = async function (text, params) {
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -22,4 +22,6 @@ export async function executeQuery(text, params) {
     console.error(err);
     return err;
   }
-}
+};
+
+module.exports = database;

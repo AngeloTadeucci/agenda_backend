@@ -1,5 +1,5 @@
 const { Router } = require("express");
-require("../db");
+const { database } = require("../db");
 
 const eventoRouter = Router();
 

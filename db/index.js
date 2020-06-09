@@ -17,12 +17,10 @@ exports.database = async (text, params) => {
 
   try {
     const client = await pool.connect();
-    let result = null;
     if (params == null) {
-      result = await client.query(text);
-    } else {
-      result = await client.query(text, params);
+      params = [];
     }
+    let result = await client.query(text, params);
     const results = result.rows;
     client.end();
     return results;

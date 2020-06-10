@@ -5,7 +5,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://angelo-agenda-frontend.herokuapp.com/",
+    origin: "https://angelo-agenda-frontend.herokuapp.com",
   })
 );
 app.use(express.json());

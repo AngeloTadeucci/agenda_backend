@@ -18,13 +18,13 @@ localRouter.post("/", async (req, res) => {
   const { cep } = req.body;
   const { endereco } = req.body;
   const { numero } = req.body;
-  const { bairo } = req.body;
+  const { bairro } = req.body;
   const { complemento } = req.body;
   const { cidade } = req.body;
   const { estado } = req.body;
   const result = await runQuery(
-    "INSERT INTO public.local (cep, endereco, numero, bairo, complemento, cidade, estado) VALUES($1,$2,$3,$4,$5,$6,$7);",
-    [cep, endereco, numero, bairo, complemento, cidade, estado]
+    "INSERT INTO public.local (cep, endereco, numero, bairro, complemento, cidade, estado) VALUES($1,$2,$3,$4,$5,$6,$7);",
+    [cep, endereco, numero, bairro, complemento, cidade, estado]
   );
   res.json(result);
 });

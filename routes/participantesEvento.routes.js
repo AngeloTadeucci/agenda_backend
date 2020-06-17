@@ -15,12 +15,12 @@ participantesEventoRouter.get("/:id", async (req, res) => {
 });
 
 participantesEventoRouter.post("/", async (req, res) => {
-  const { idevento } = req.body;
-  const { idcontato } = req.body;
+  const { idEvento } = req.body;
+  const { idContato } = req.body;
   const { confirmacao } = req.body;
   const result = await runQuery(
     "INSERT INTO public.participantesevento (idevento, idcontato, confirmacao) VALUES($1,$2,$3);",
-    [idevento, idcontato, confirmacao]
+    [idEvento, idContato, confirmacao]
   );
   res.json(result);
 });

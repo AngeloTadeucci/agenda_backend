@@ -27,7 +27,8 @@ exports.runQuery = async (text, params) => {
   } catch (err) {
     console.error(err);
     const error = {
-      message: "Erro"
+      message: "Erro",
+      error: err
     }
     return error;
   }

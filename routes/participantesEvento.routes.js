@@ -5,13 +5,13 @@ const participantesEventoRouter = Router();
 
 participantesEventoRouter.get("/", async (req, res) => {
   const result = await runQuery("SELECT * FROM public.participantesevento", null);
-  res.json(results);
+  res.json(result);
 });
 
 participantesEventoRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   const result = await runQuery("SELECT * FROM public.participantesevento WHERE idevento = $1", [id]);
-  res.json(results);
+  res.json(result);
 });
 
 participantesEventoRouter.post("/", async (req, res) => {

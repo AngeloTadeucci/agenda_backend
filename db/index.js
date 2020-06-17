@@ -1,6 +1,6 @@
 const { Pool } = require("pg"); //       postgres://angel:gelo96@localhost:5432/angel
 
-exports.database = async (text, params) => {
+exports.runQuery = async (text, params) => {
   let pool;
   if (process.env.DATABASE_URL) {
     pool = new Pool({
@@ -26,6 +26,9 @@ exports.database = async (text, params) => {
     return results;
   } catch (err) {
     console.error(err);
-    return err;
+    const error = {
+      message: "Erro"
+    }
+    return error;
   }
 };

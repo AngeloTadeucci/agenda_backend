@@ -1,36 +1,36 @@
 const { Router } = require("express");
-const { database } = require("../db");
+const { runQuery } = require("../db");
 
 const tipoContatoRouter = Router();
 
 tipoContatoRouter.get("/", async (req, res) => {
-  const results = await database("SELECT * FROM tipocontato", null);
-  res.json({ results });
+  const result = await runQuery("SELECT * FROM tipocontato", null);
+  res.json(result);
 });
 
 tipoContatoRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const results = await database("SELECT * FROM public.tipocontato where id = $1", [id]);
-  res.json({ results });
+  const result = await runQuery("SELECT * FROM public.tipocontato where id = $1", [id]);
+  res.json(result);
 });
 
 tipoContatoRouter.post("/", async (req, res) => {
   const { descricao } = req.body;
-  const result = await database("INSERT INTO public.tipocontato (descricao) VALUES($1);", [descricao]);
-  res.json({ result });
+  const result = await runQuery("INSERT INTO public.tipocontato (descricao) VALUES($1);", [descricao]);
+  res.json(result);
 });
 
 tipoContatoRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  const result = await database("DELETE FROM public.tipocontato WHERE id=$1;", [id]);
-  res.json({ result });
+  const result = await runQuery("DELETE FROM public.tipocontato WHERE id=$1;", [id]);
+  res.json(result);
 });
 
 tipoContatoRouter.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { descricao } = req.body;
-  const result = await database("UPDATE public.tipocontato SET descricao=$1 WHERE id=$2", [descricao, id]);
-  res.json({ result });
+  const result = await runQuery("UPDATE public.tipocontato SET descricao=$1 WHERE id=$2", [descricao, id]);
+  res.json(result);
 });
 
 module.exports = tipoContatoRouter;

@@ -40,13 +40,13 @@ localRouter.patch("/:id", async (req, res) => {
   const { cep } = req.body;
   const { endereco } = req.body;
   const { numero } = req.body;
-  const { bairo } = req.body;
+  const { bairro } = req.body;
   const { complemento } = req.body;
   const { cidade } = req.body;
   const { estado } = req.body;
   const result = await runQuery(
-    "UPDATE public.local SET cep=$1, endereco=$2, numero=$3, bairo=$4, complemento=$5, cidade=$6, estado=$7 WHERE id=$8;",
-    [cep, endereco, numero, bairo, complemento, cidade, estado, id]
+    "UPDATE public.local SET cep=$1, endereco=$2, numero=$3, bairro=$4, complemento=$5, cidade=$6, estado=$7 WHERE id=$8;",
+    [cep, endereco, numero, bairro, complemento, cidade, estado, id]
   );
   res.json(result);
 });

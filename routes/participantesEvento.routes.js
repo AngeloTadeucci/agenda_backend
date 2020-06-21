@@ -8,9 +8,10 @@ participantesEventoRouter.get("/", async (req, res) => {
   res.json(result);
 });
 
-participantesEventoRouter.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const result = await runQuery("SELECT * FROM public.participantesevento WHERE idevento = $1", [id]);
+participantesEventoRouter.get("/:idEvento/:idContato", async (req, res) => {
+  const { idEvento  } = req.params;
+  const { idContato } = req.params;
+  const result = await runQuery("SELECT * FROM public.participantesevento WHERE idevento = $1 and idcontato = $2", [idEvento,idContato]);
   res.json(result);
 });
 
@@ -26,22 +27,20 @@ participantesEventoRouter.post("/", async (req, res) => {
 });
 
 participantesEventoRouter.delete("/:idEvento/:idContato", async (req, res) => {
-  const { idevento  } = req.params;
-  const { idcontato } = req.params;
-  const result = await runQuery("DELETE FROM public.participantesevento WHERE idevento = $1 andd idcontato = $2", [idevento, idcontato]);
+  const { idEvento  } = req.params;
+  const { idContato } = req.params;
+  const result = await runQuery("DELETE FROM public.participantesevento WHERE idevento = $1 and idcontato = $2", [idEvento, idContato]);
   res.json(result);
 });
 
-participantesEventoRouter.patch("/:id", async (req, res) => {
-  const { id } = req.params;
-  const { idevento } = req.body;
-  const { idcontato } = req.body;
+participantesEventoRouter.patch("/:idEvento/:idContato", async (req, res) => {
+  const { idEvento } = req.params;
+  const { idContato } = req.params;
   const { confirmacao } = req.body;
-  const result = await runQuery("UPDATE public.participantesevento SET idevento=$1, idcontato=$2, confirmacao=$3;", [
-    idevento,
-    idcontato,
-    confirmacao,
-    id,
+  const result = await runQuery("UPDATE public.participantesevento SET confirmacao=$3 where idevento = $1 and idcontato=$2", [
+    idEvento,
+    idContato,
+    confirmacao
   ]);
   res.json(result);
 });
